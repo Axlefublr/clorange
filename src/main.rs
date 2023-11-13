@@ -1,7 +1,6 @@
 use args::Args;
 use clap::Parser;
 use std::error::Error;
-use std::io::ErrorKind;
 use std::path::PathBuf;
 
 const APP_NAME: &str = "clorange";
@@ -10,14 +9,13 @@ mod args;
 mod data;
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let Args { here } = Args::parse();
-	let data_dir = if here {
-		PathBuf::from(".")
-	} else {
-		data::get_data_dir().unwrap_or_else(|error| {
-			eprintln!("{}. Using current directory instead.\nUse the flag --here (or -c) to opt into this behavior on your own.", error);
-			PathBuf::from(".")
-		})
+	let Args { data } = Args::parse();
+	let data = match data {
+		Some(path) => path,
+		None => data::get_data_dir().map_err(|error| {
+			format!("{}. Specify your own with --data / -d.", error)
+		})?
 	};
+	data::ensure_exists(&data)?;
 	Ok(())
 }

@@ -1,9 +1,13 @@
+use std::path::PathBuf;
 use clap::Parser;
 
 #[derive(Parser)]
 pub struct Args {
-	/// Use the current working directory as the data directory.
-	/// Usually, your OS' cache directory is used.
-	#[arg(short = 'c', long)]
-	pub here: bool
+	/// Specify the directory to make the counter files in.
+	///
+	/// Subdirectories don't have to exist already, clorange will make them for you.
+	///
+	/// By default, clorange makes a directory with its app name in your OS' data directory.
+	#[arg(short, long)]
+	pub data: Option<PathBuf>
 }
