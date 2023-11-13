@@ -1,4 +1,10 @@
 [package]
+authors = ["Axlefublr"]
+license = "MIT"
+description = "not done yet"
+readme = "README.md"
+homepage = "https://github.com/Axlefublr/clorange"
+repository = "https://github.com/Axlefublr/clorange"
 name = "clorange"
 version = "0.1.0"
 edition = "2021"
