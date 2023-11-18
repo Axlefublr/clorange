@@ -2,7 +2,6 @@ use args::Args;
 use clap::Parser;
 use std::env::VarError;
 use std::error::Error;
-use std::path::PathBuf;
 
 const APP_NAME: &str = "clorange";
 const DATA_DIR_ENV_VAR: &str = "CLORANGE_DATA_DIR";
