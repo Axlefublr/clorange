@@ -14,12 +14,31 @@ By default, clorange makes a directory with its app name in your OS' data direct
 You can override it by setting the environment variable {DATA_DIR_ENV_VAR} to the path you want.
 An even stronger override is using the -d / --data flags.
 
-Subdirectories in the provided paths don't have to exist already, {APP_NAME} will make them for you.");
+Each counter file contains a single number, that you modify with subcommands.
+The number is a float, so float operations are supported,
+but you can just specify your argument numbers as integers (1 vs 1.0)");
+
+const DATA_ABOUT: &str = formatcp!(
+	"\
+Specify the directory to make the counter files in.
+Subdirectories don't have to exist already, {APP_NAME} will make them for you.
+The data directory acts as a \"current working directory\" essentially,
+since you can still specify paths in subdirectories for the counter file."
+);
+
+const COUNTER_ABOUT: &str = formatcp!(
+	"\
+Specify the filename of a counter you want to (possibly) modify.
+Counter files, along with all their parent directories, are created automatically
+if the subcommand you're calling isn't \"clear\".
+The default value in a new counter file is 0."
+);
 
 #[derive(Parser)]
 #[command(author, version, long_about = ABOUT)]
 pub struct Args {
-	/// Specify the directory to make the counter files in
-	#[arg(short, long, value_name = "PATH")]
+	#[arg(short, long, value_name = "PATH", help = DATA_ABOUT)]
 	pub data: Option<PathBuf>,
+	#[arg(help = COUNTER_ABOUT)]
+	pub counter: PathBuf,
 }

@@ -10,7 +10,10 @@ mod args;
 mod data;
 
 fn main() -> Result<(), Box<dyn Error>> {
-	let Args { data } = Args::parse();
+	let Args {
+		data,
+		counter,
+	} = Args::parse();
 	// I'd love to use more .unwrap_or_else()s here, but ?
 	let data = match data {
 		Some(path) => path,
@@ -28,6 +31,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 			}
 		}
 	};
-	data::ensure_exists(&data)?;
+	let counter = data.join(counter);
+	data::ensure_exists(&counter)?;
 	Ok(())
 }
