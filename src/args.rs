@@ -1,4 +1,3 @@
-use about::*;
 use clap::Parser;
 use clap::Subcommand;
 use std::path::PathBuf;
@@ -6,11 +5,11 @@ use std::path::PathBuf;
 mod about;
 
 #[derive(Parser)]
-#[command(author, version, long_about = ABOUT)]
+#[command(author, version, long_about = about::LONG)]
 pub struct Args {
-    #[arg(short, long, value_name = "PATH", help = DATA_ABOUT)]
+    #[arg(short, long, value_name = "PATH", help = about::DATA)]
     pub data: Option<PathBuf>,
-    #[arg(help = COUNTER_ABOUT)]
+    #[arg(help = about::COUNTER)]
     pub counter: PathBuf,
     #[command(subcommand)]
     pub action: Action,
@@ -22,8 +21,9 @@ pub enum Action {
     Increment,
     #[command(visible_alias = "dec")]
     Decrement,
-    #[command(visible_alias = "create", about = NEW_ABOUT)]
+    #[command(visible_alias = "create", about = about::NEW)]
     New,
+    #[command(about = about::RESET)]
     Reset,
     Set {
         num: f64,
@@ -39,6 +39,6 @@ pub enum Action {
     #[command(visible_alias = "look")]
     #[command(visible_alias = "view")]
     Show,
-    #[command(about = CLEAR_ABOUT)]
+    #[command(about = about::CLEAR)]
     Clear,
 }
