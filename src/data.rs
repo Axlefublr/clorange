@@ -34,7 +34,7 @@ pub fn ensure_exists(path: &Path) -> io::Result<()> {
 
 pub fn default_location() -> Result<PathBuf, io::Error> {
 	let data_dir = dirs::data_dir()
-		.ok_or_else(|| io::Error::new(ErrorKind::NotFound, "Data directory not found"))?;
+		.ok_or_else(|| io::Error::new(ErrorKind::NotFound, "Failed to retrieve path of the OS' data directory"))?;
 	Ok(data_dir.join(DATA_SUBDIR))
 }
 
