@@ -20,7 +20,7 @@ Each counter file contains a single number, that you modify with subcommands.
 The number is a float, so float operations are supported, but you can just specify your argument numbers as integers (1 vs 1.0)");
 
 pub const DATA_ABOUT: &str = formatcp!(
-	"\
+    "\
 Specify the directory to make the counter files in.
 Subdirectories don't have to exist already, {APP_NAME} will make them for you.
 The data directory acts as a \"current working directory\" essentially,
@@ -28,7 +28,7 @@ since you can still specify paths in subdirectories for the counter file."
 );
 
 pub const COUNTER_ABOUT: &str = formatcp!(
-	"\
+    "\
 Specify the filename of a counter you want to (possibly) modify.
 Counter files, along with all their parent directories, are created automatically
 if the subcommand you're calling isn't \"clear\".
@@ -39,7 +39,7 @@ The default value in a new counter file is 0."
 );
 
 pub const CLEAR_ABOUT: &str = formatcp!(
-	"\
+    "\
 Delete the default data directory along with all the counter files.
 You would usually do this before uninstalling {APP_NAME} D:
 Or to just clean up old unused counters :D"
