@@ -17,7 +17,12 @@ An even stronger override is using the -d / --data flags.
 Both don't require you to create the subdirectories in the path beforehand.
 
 Each counter file contains a single number, that you modify with subcommands.
-The number is a float, so float operations are supported, but you can just specify your argument numbers as integers (1 vs 1.0)");
+The number is a float, so float operations are supported, but you can just specify your argument numbers as integers (1 vs 1.0)
+Counter files, along with all their parent directories, are created automatically once you call any subcommand aside from `help` / `-h` / `--help`.
+This is useful in such a way that you can consider the data directory as a 'current working directory', to which you can then specify relative paths in the <COUNTER> argument of all* subcommands like 'subdir/reboots', keeping your counter files easily organized, without having to change the data directory all the time.
+The default value in a new counter file is 0.
+
+* → all but the `clear` subcommand");
 
 pub const DATA: &str = formatcp!(
     "\
@@ -25,26 +30,6 @@ Specify the directory to make the counter files in.
 Subdirectories don't have to exist already, {APP_NAME} will make them for you.
 The data directory acts as a 'current working directory' essentially,
 since you can still specify paths in subdirectories for the counter file."
-);
-
-pub const COUNTER: &str = formatcp!(
-    "\
-Specify the filename of a counter you want to (possibly) modify.
-Counter files, along with all their parent directories, are created automatically
-if the subcommand you're calling isn't 'clear'.
-This is useful in such a way that you can consider the data directory
-as a 'current working directory',
-to which you can then specify relative paths in this argument like 'subdir/reboots',
-keeping your counter files easily organized,
-without having to change the data directory all the time.
-The default value in a new counter file is 0."
-);
-
-pub const CLEAR: &str = formatcp!(
-    "\
-Delete the default data directory along with all the counter files.
-You would usually do this before uninstalling {APP_NAME} D:
-Or to just clean up old unused counters :D"
 );
 
 pub const NEW: &str = "\
@@ -63,3 +48,10 @@ Set the counter to 0.
 If the counter file didn't exist prior,
 this is equivalent to: `add 0`, `sub 0`, `new`.
 Acts as an equivalent alias to `set 0` — use whichever you like more.";
+
+pub const CLEAR: &str = formatcp!(
+    "\
+Delete the default data directory along with all the counter files.
+You would usually do this before uninstalling {APP_NAME} D:
+Or to just clean up old unused counters :D"
+);

@@ -8,11 +8,11 @@ const DATA_DIR_ENV_VAR: &str = "CLORANGE_DATA_DIR";
 
 mod args;
 mod data;
+mod actions;
 
 fn main() -> Result<(), Box<dyn Error>> {
     let Args {
         data,
-        counter,
         action,
     } = Args::parse();
     // I'd love to use more .unwrap_or_else()s here, but ?
@@ -32,7 +32,6 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
     };
-    let counter = data.join(counter);
-    data::ensure_exists(&counter)?;
+    data::ensure_dirs_exist(&data)?;
     Ok(())
 }

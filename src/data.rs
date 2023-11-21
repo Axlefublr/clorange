@@ -11,12 +11,19 @@ use std::path::PathBuf;
 const DATA_SUBDIR: &str = APP_NAME;
 const DEFAULT_START_VALUE: &str = "0.0";
 
-pub fn ensure_exists(path: &Path) -> io::Result<()> {
+pub fn ensure_dirs_exist(dir: &Path) -> io::Result<()> {
+    if !dir.exists() {
+        fs::create_dir_all(dir)?;
+    }
+    Ok(())
+}
+
+pub fn ensure_file_exists(path: &Path) -> Result<(), io::Error> {
     let dir = path.parent().ok_or_else(|| {
         io::Error::new(
-            ErrorKind::NotFound,
+            ErrorKind::InvalidInput,
             format!(
-                "You didn't specify a data directory.\nSpecified path is: {}",
+                "Path is invalid: {}",
                 path.display()
             )
             .as_str(),
@@ -24,9 +31,9 @@ pub fn ensure_exists(path: &Path) -> io::Result<()> {
     })?;
     path.file_name()
         .ok_or_else(|| io::Error::new(ErrorKind::InvalidInput, ".. or . are not valid filenames"))?;
-    fs::create_dir_all(dir)?;
+    ensure_dirs_exist(dir)?;
     if !path.exists() {
-        fs::write(path, DEFAULT_START_VALUE)?
+        fs::write(path, DEFAULT_START_VALUE)?;
     }
     Ok(())
 }

@@ -9,8 +9,6 @@ mod about;
 pub struct Args {
     #[arg(short, long, value_name = "PATH", help = about::DATA)]
     pub data: Option<PathBuf>,
-    #[arg(help = about::COUNTER)]
-    pub counter: PathBuf,
     #[command(subcommand)]
     pub action: Action,
 }
@@ -18,27 +16,48 @@ pub struct Args {
 #[derive(Subcommand)]
 pub enum Action {
     #[command(visible_alias = "inc")]
-    Increment,
+    Increment {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
+    },
     #[command(visible_alias = "dec")]
-    Decrement,
+    Decrement {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
+    },
     #[command(visible_alias = "create", about = about::NEW)]
-    New,
+    New {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
+    },
     #[command(about = about::RESET)]
-    Reset,
+    Reset {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
+    },
     Set {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
         num: f64,
     },
     Add {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
         num: f64,
     },
     #[command(visible_alias = "sub")]
     Subtract {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
         num: f64,
     },
     #[command(visible_alias = "see")]
     #[command(visible_alias = "look")]
     #[command(visible_alias = "view")]
-    Show,
+    Show {
+        #[arg(value_name = "PATH")]
+        counter: PathBuf,
+    },
     #[command(about = about::CLEAR)]
     Clear,
 }
