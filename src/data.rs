@@ -2,9 +2,13 @@ use crate::APP_NAME;
 use crate::DATA_DIR_ENV_VAR;
 use std::env;
 use std::env::VarError;
+use std::error::Error;
 use std::fs;
+use std::fs::File;
 use std::io;
 use std::io::ErrorKind;
+use std::io::Read;
+use std::io::Write;
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -22,11 +26,7 @@ pub fn ensure_file_exists(path: &Path) -> Result<(), io::Error> {
     let dir = path.parent().ok_or_else(|| {
         io::Error::new(
             ErrorKind::InvalidInput,
-            format!(
-                "Path is invalid: {}",
-                path.display()
-            )
-            .as_str(),
+            format!("Path is invalid: {}", path.display()).as_str(),
         )
     })?;
     path.file_name()
@@ -35,6 +35,27 @@ pub fn ensure_file_exists(path: &Path) -> Result<(), io::Error> {
     if !path.exists() {
         fs::write(path, DEFAULT_START_VALUE)?;
     }
+    Ok(())
+}
+
+pub fn read(counter: &Path) -> Result<f64, Box<dyn Error>> {
+    Ok(fs::read_to_string(counter)?.parse()?)
+}
+
+pub fn write(counter: &Path, contents: f64) -> Result<(), io::Error> {
+    fs::write(counter, contents.to_string())
+}
+
+pub fn read_write<T>(counter: &Path, action: T) -> Result<(), Box<dyn Error>>
+where
+    T: FnOnce(f64) -> f64,
+{
+    let mut file = File::open(counter)?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+    let value: f64 = contents.parse()?;
+    let value = action(value);
+    file.write_all(value.to_string().as_bytes())?;
     Ok(())
 }
 
