@@ -1,3 +1,4 @@
+use args::Action;
 use args::Args;
 use clap::Parser;
 use std::env::VarError;
@@ -6,15 +7,12 @@ use std::error::Error;
 const APP_NAME: &str = "clorange";
 const DATA_DIR_ENV_VAR: &str = "CLORANGE_DATA_DIR";
 
+mod actions;
 mod args;
 mod data;
-mod actions;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let Args {
-        data,
-        action,
-    } = Args::parse();
+    let Args { data, action } = Args::parse();
     // I'd love to use more .unwrap_or_else()s here, but ?
     let data = match data {
         Some(path) => path,
@@ -32,6 +30,23 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
     };
+    if let Action::Clear = action {
+        actions::clear()?;
+        return Ok(());
+    }
     data::ensure_dirs_exist(&data)?;
+    match action {
+        Action::Increment { counter } => {
+            let counter = data.join(counter);
+            data::ensure_file_exists(&counter)?;
+            actions::increment(data.join(counter))?;
+        }
+        Action::Decrement { counter } => {
+            let counter = data.join(counter);
+            data::ensure_file_exists(&counter)?;
+            actions::decrement(data.join(counter))?;
+        }
+        _ => (),
+    }
     Ok(())
 }
