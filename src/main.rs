@@ -45,8 +45,34 @@ fn main() -> Result<(), Box<dyn Error>> {
             let counter = data.join(counter);
             data::ensure_file_exists(&counter)?;
             actions::decrement(data.join(counter))?;
+        },
+        Action::New { counter } => data::ensure_file_exists(&data.join(counter))?,
+        Action::Reset { counter } => {
+            let counter = data.join(counter);
+            data::ensure_file_exists(&counter)?;
+            actions::set(data.join(counter), 0.0)?;
+        },
+        Action::Set { counter, num } => {
+            let counter = data.join(counter);
+            data::ensure_file_exists(&counter)?;
+            actions::set(data.join(&counter), num)?;
+        },
+        Action::Add { counter, num } => {
+            let counter = data.join(counter);
+            data::ensure_file_exists(&counter)?;
+            actions::add(data.join(&counter), num)?;
+        },
+        Action::Subtract { counter, num } => {
+            let counter = data.join(counter);
+            data::ensure_file_exists(&counter)?;
+            actions::add(data.join(&counter), -num)?;
+        },
+        Action::Show { counter } => {
+            let counter = data.join(counter);
+            data::ensure_file_exists(&counter)?;
+            actions::show(data.join(&counter))?;
         }
-        _ => (),
+        Action::Clear => unreachable!("Already short circuited prior")
     }
     Ok(())
 }
