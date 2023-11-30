@@ -50,12 +50,15 @@ pub fn read_write<T>(counter: &Path, action: T) -> Result<(), Box<dyn Error>>
 where
     T: FnOnce(f64) -> f64,
 {
-    let mut file = File::open(counter)?;
+    let mut file = OpenOptions::new().read(true).write(true).open(counter)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
-    let value: f64 = contents.parse()?;
+    let value: f64 = contents.trim().parse()?;
     let value = action(value);
+    file.set_len(0)?;
+    file.rewind()?;
     file.write_all(value.to_string().as_bytes())?;
+    file.flush()?;
     Ok(())
 }
 
