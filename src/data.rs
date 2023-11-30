@@ -4,10 +4,11 @@ use std::env;
 use std::env::VarError;
 use std::error::Error;
 use std::fs;
-use std::fs::File;
+use std::fs::OpenOptions;
 use std::io;
 use std::io::ErrorKind;
 use std::io::Read;
+use std::io::Seek;
 use std::io::Write;
 use std::path::Path;
 use std::path::PathBuf;
@@ -39,7 +40,7 @@ pub fn ensure_file_exists(path: &Path) -> Result<(), io::Error> {
 }
 
 pub fn read(counter: &Path) -> Result<f64, Box<dyn Error>> {
-    Ok(fs::read_to_string(counter)?.parse()?)
+    Ok(fs::read_to_string(counter)?.trim().parse()?)
 }
 
 pub fn write(counter: &Path, contents: f64) -> Result<(), io::Error> {
