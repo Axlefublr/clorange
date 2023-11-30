@@ -17,7 +17,6 @@ An even stronger override is using the -d / --data flags.
 Both don't require you to create the subdirectories in the path beforehand.
 
 Each counter file contains a single number, that you modify with subcommands.
-The number is a float, so float operations are supported, but you can just specify your argument numbers as integers (1 vs 1.0)
 Counter files, along with all their parent directories, are created automatically once you call any subcommand aside from `help` / `-h` / `--help`.
 This is useful in such a way that you can consider the data directory as a 'current working directory', to which you can then specify relative paths in the <COUNTER> argument of all* subcommands like 'subdir/reboots', keeping your counter files easily organized, without having to change the data directory all the time.
 The default value in a new counter file is 0.
@@ -35,7 +34,7 @@ since you can still specify paths in subdirectories for the counter file."
 pub const NEW: &str = "\
 Simply ensures that the counter file exists, and if it doesn't, creates it with the
 default value of 0.
-The difference between this and `reset` or `set 0` is that if the file already
+The difference between this and `reset` / `set 0` is that if the file already
 exists, nothing will happen.
 With the other two mentioned subcommands, an additional write will be done to
 the file, whether or not it already exists;
