@@ -1,3 +1,5 @@
+#![deny(unused_must_use)]
+
 use args::Action;
 use args::Args;
 use clap::Parser;
