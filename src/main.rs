@@ -52,7 +52,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         Action::Reset { counter } => {
             let counter = data.join(counter);
             data::ensure_file_exists(&counter)?;
-            actions::set(data.join(counter), 0.0)?;
+            actions::set(data.join(counter), 0)?;
         },
         Action::Set { counter, num } => {
             let counter = data.join(counter);

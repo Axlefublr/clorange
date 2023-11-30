@@ -38,18 +38,18 @@ pub enum Action {
     Set {
         #[arg(value_name = "PATH")]
         counter: PathBuf,
-        num: f64,
+        num: i64,
     },
     Add {
         #[arg(value_name = "PATH")]
         counter: PathBuf,
-        num: f64,
+        num: i64,
     },
     #[command(visible_alias = "sub")]
     Subtract {
         #[arg(value_name = "PATH")]
         counter: PathBuf,
-        num: f64,
+        num: i64,
     },
     #[command(visible_alias = "see")]
     #[command(visible_alias = "look")]

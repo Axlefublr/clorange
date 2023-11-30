@@ -14,7 +14,8 @@ use std::path::Path;
 use std::path::PathBuf;
 
 const DATA_SUBDIR: &str = APP_NAME;
-const DEFAULT_START_VALUE: &str = "0.0";
+const DEFAULT_START_VALUE: &str = "0";
+const INT_PARSE_ERROR: &str = "Only integers are allowed";
 
 pub fn ensure_dirs_exist(dir: &Path) -> io::Result<()> {
     if !dir.exists() {
@@ -39,22 +40,22 @@ pub fn ensure_file_exists(path: &Path) -> Result<(), io::Error> {
     Ok(())
 }
 
-pub fn read(counter: &Path) -> Result<f64, Box<dyn Error>> {
-    Ok(fs::read_to_string(counter)?.trim().parse()?)
+pub fn read(counter: &Path) -> Result<i64, Box<dyn Error>> {
+    Ok(fs::read_to_string(counter)?.trim().parse().map_err(|_| INT_PARSE_ERROR)?)
 }
 
-pub fn write(counter: &Path, contents: f64) -> Result<(), io::Error> {
+pub fn write(counter: &Path, contents: i64) -> Result<(), io::Error> {
     fs::write(counter, contents.to_string())
 }
 
 pub fn read_write<T>(counter: &Path, action: T) -> Result<(), Box<dyn Error>>
 where
-    T: FnOnce(f64) -> f64,
+    T: FnOnce(i64) -> i64,
 {
     let mut file = OpenOptions::new().read(true).write(true).open(counter)?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
-    let value: f64 = contents.trim().parse()?;
+    let value: i64 = contents.trim().parse().map_err(|_| INT_PARSE_ERROR)?;
     let value = action(value);
     file.set_len(0)?;
     file.rewind()?;
