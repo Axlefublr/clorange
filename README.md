@@ -12,10 +12,10 @@ I have this fish function which functions (lol and even lmao) as a pomodorro tim
 
 ```fish
 function pom
-	while true
-		termdown 25m || break
-		termdown 5m || break
-	end
+    while true
+        termdown 25m || break
+        termdown 5m || break
+    end
 end
 ```
 
