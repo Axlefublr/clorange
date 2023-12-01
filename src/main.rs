@@ -8,13 +8,20 @@ use std::error::Error;
 
 const APP_NAME: &str = "clorange";
 const DATA_DIR_ENV_VAR: &str = "CLORANGE_DATA_DIR";
+const COUNTER_SUBCOMMAND_REQUIRED_ERROR: &str =
+    "Counter file and subcommand are required, unless the --clear flag is specified.";
 
 mod actions;
 mod args;
 mod data;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let Args { data, action } = Args::parse();
+    let Args {
+        data,
+        clear,
+        counter,
+        action,
+    } = Args::parse();
     // I'd love to use more .unwrap_or_else()s here, but ?
     let data = match data {
         Some(path) => path,
@@ -32,49 +39,42 @@ fn main() -> Result<(), Box<dyn Error>> {
             }
         }
     };
-    if let Action::Clear = action {
+    if clear {
         actions::clear()?;
         return Ok(());
     }
+    let Some(counter) = counter else {
+        Err(COUNTER_SUBCOMMAND_REQUIRED_ERROR)?
+    };
+    let Some(action) = action else {
+        Err(COUNTER_SUBCOMMAND_REQUIRED_ERROR)?
+    };
     data::ensure_dirs_exist(&data)?;
+    let counter = data.join(counter);
+    data::ensure_file_exists(&counter)?;
     match action {
-        Action::Increment { counter } => {
-            let counter = data.join(counter);
-            data::ensure_file_exists(&counter)?;
-            actions::increment(data.join(counter))?;
+        Action::Increment => {
+            actions::increment(counter)?;
         }
-        Action::Decrement { counter } => {
-            let counter = data.join(counter);
-            data::ensure_file_exists(&counter)?;
-            actions::decrement(data.join(counter))?;
-        },
-        Action::New { counter } => data::ensure_file_exists(&data.join(counter))?,
-        Action::Reset { counter } => {
-            let counter = data.join(counter);
-            data::ensure_file_exists(&counter)?;
-            actions::set(data.join(counter), 0)?;
-        },
-        Action::Set { counter, num } => {
-            let counter = data.join(counter);
-            data::ensure_file_exists(&counter)?;
-            actions::set(data.join(&counter), num)?;
-        },
-        Action::Add { counter, num } => {
-            let counter = data.join(counter);
-            data::ensure_file_exists(&counter)?;
-            actions::add(data.join(&counter), num)?;
-        },
-        Action::Subtract { counter, num } => {
-            let counter = data.join(counter);
-            data::ensure_file_exists(&counter)?;
-            actions::add(data.join(&counter), -num)?;
-        },
-        Action::Show { counter } => {
-            let counter = data.join(counter);
-            data::ensure_file_exists(&counter)?;
-            actions::show(data.join(&counter))?;
+        Action::Decrement => {
+            actions::decrement(counter)?;
         }
-        Action::Clear => unreachable!("Already short circuited prior")
+        Action::New => (), // we already ensured the file's existance
+        Action::Reset => {
+            actions::set(counter, 0)?;
+        }
+        Action::Set { num } => {
+            actions::set(counter, num)?;
+        }
+        Action::Add { num } => {
+            actions::add(counter, num)?;
+        }
+        Action::Subtract { num } => {
+            actions::add(counter, -num)?;
+        }
+        Action::Show => {
+            actions::show(counter)?;
+        }
     }
     Ok(())
 }
