@@ -1,3 +1,0 @@
-The patch versions from 1.0.0 to this one change nothing in terms of code
-Couldn't figure out github actions for a while
-You can now install this project using `cargo-binstall` / `cargo-quickinstall`!
