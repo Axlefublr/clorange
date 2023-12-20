@@ -2,7 +2,6 @@ use std::error::Error;
 use std::fs;
 use std::io;
 use std::path::PathBuf;
-
 use crate::data;
 
 pub fn clear() -> Result<(), io::Error> {

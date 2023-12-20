@@ -43,21 +43,25 @@ No need to edit the files manually when you need to set arbitrary values — use
 
 Want to ensure a counter file exists for a laugh? We have a tool for that, it's called `clorange instances new`.
 
-# Usage
+## Usage
 
 ```
-By default, clorange stores counters in a directory named 'clorange' located in your OS' data directory.
-  * Linux: /home/username/.local/share/clorange
-  * MacOS: /Users/username/Library/Application Support/clorange
-  * Windows: C:/Users/username/AppData/Roaming/clorange
-You can override it by setting the environment variable CLORANGE_DATA_DIR to the path you want.
+By default, clorange stores counters in a directory named 'clorange' located in
+your OS' data directory.
+* Linux: /home/username/.local/share/clorange
+* MacOS: /Users/username/Library/Application Support/clorange
+* Windows: C:/Users/username/AppData/Roaming/clorange
+You can override it by setting the environment variable CLORANGE_DATA_DIR to the
+path you want.
 An even stronger override is using the -d / --data flags.
 Both don't require you to create the subdirectories in the path beforehand.
 
-Each counter uses its own file (which contains a single number), that you modify with subcommands.
+Each counter uses its own file (which contains a single number), that you modify
+with subcommands.
 The default value in a new counter file is 0.
 Counter files are created automatically once you call any subcommand.
-You can specify parent directories in the <COUNTER> argument, and they also don't have to exist beforehand.
+You can specify parent directories in the <COUNTER> argument, and they also don't
+have to exist beforehand.
 The relative-looking path is effectively relative to the data directory.
 
 Usage: clorange [OPTIONS] [COUNTER] [COMMAND]
@@ -65,10 +69,10 @@ Usage: clorange [OPTIONS] [COUNTER] [COMMAND]
 Commands:
   increment  [aliases: inc, i]
   decrement  [aliases: dec, d]
-  new        Ensures that the counter file exists,
-                 and creates it if it doesn't. [aliases: create, n]
-  reset      Set the counter to 0.
-                 Acts as an equivalent alias to `set 0` [aliases: r]
+  new        Ensures that the counter file exists, and creates it if it
+                 doesn't [aliases: create, n]
+  reset      Set the counter to 0. Acts as an equivalent alias to `set 0`
+                 [aliases: r]
   set        [aliases: t]
   add        [aliases: a]
   subtract   [aliases: s, sub]
@@ -76,33 +80,27 @@ Commands:
   help       Print this message or the help of the given subcommand(s)
 
 Arguments:
-  [COUNTER]
-          Specify a path to a counter file, relative to the data directory.
+  [COUNTER]  Specify a path to a counter file, relative to the data directory
 
 Options:
-  -d, --data <PATH>
-          Specify the directory to make the counter files in.
-
-  -c, --clear
-          Delete the default data directory along with all the counter files,
-          and then immediately exit.
-          You would usually do this before uninstalling clorange D:
-          Or to just clean up old unused counters :D
-
-  -h, --help
-          Print help (see a summary with '-h')
-
-  -V, --version
-          Print version
+  -d, --data <PATH>  Specify the directory to make the counter files in
+  -c, --clear        Delete the default data directory along with all the counter
+                     files, and then immediately exit. You would usually do this
+                     before uninstalling clorange D: Or to just clean up old
+                     unused counters :D"
+  -h, --help         Print help
+  -V, --version      Print version
 ```
 
-# Install
+## Install
 
 ```
 cargo install clorange
 ```
 
-# Uninstall
+`cargo-binstall` and `cargo-quickinstall` are also supported.
+
+## Uninstall
 
 ```
 clorange --clear
