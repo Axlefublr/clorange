@@ -1,12 +1,12 @@
 [package]
 authors = ["Axlefublr"]
 license = "MIT"
-description = "A simple shell-oriented counter CLI"
+description = "A simple shell-oriented counter CLI."
 readme = "README.md"
 homepage = "https://github.com/Axlefublr/clorange"
 repository = "https://github.com/Axlefublr/clorange"
 name = "clorange"
-version = "1.0.3"
+version = "1.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

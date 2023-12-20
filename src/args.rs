@@ -54,18 +54,12 @@ pub enum Action {
     #[command(visible_alias = "r")]
     Reset,
     #[command(visible_alias = "t")]
-    Set {
-        num: i64,
-    },
+    Set { num: i64 },
     #[command(visible_alias = "a")]
-    Add {
-        num: i64,
-    },
+    Add { num: i64 },
     #[command(visible_alias = "s")]
     #[command(visible_alias = "sub")]
-    Subtract {
-        num: i64,
-    },
+    Subtract { num: i64 },
     #[command(visible_alias = "v")]
     #[command(visible_alias = "see")]
     #[command(visible_alias = "look")]

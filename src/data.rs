@@ -41,7 +41,10 @@ pub fn ensure_file_exists(path: &Path) -> Result<(), io::Error> {
 }
 
 pub fn read(counter: &Path) -> Result<i64, Box<dyn Error>> {
-    Ok(fs::read_to_string(counter)?.trim().parse().map_err(|_| INT_PARSE_ERROR)?)
+    Ok(fs::read_to_string(counter)?
+        .trim()
+        .parse()
+        .map_err(|_| INT_PARSE_ERROR)?)
 }
 
 pub fn write(counter: &Path, contents: i64) -> Result<(), io::Error> {
