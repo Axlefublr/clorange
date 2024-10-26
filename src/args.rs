@@ -34,6 +34,7 @@ pub struct Args {
     pub clear: bool,
     /// Specify a path to a counter file, relative to the data directory.
     pub counter: Option<PathBuf>,
+    /// All actions also print the resulting number.
     #[command(subcommand)]
     pub action: Option<Action>,
 }

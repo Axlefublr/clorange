@@ -31,8 +31,9 @@ pub fn ensure_file_exists(path: &Path) -> Result<(), io::Error> {
             format!("Path is invalid: {}", path.display()).as_str(),
         )
     })?;
-    path.file_name()
-        .ok_or_else(|| io::Error::new(ErrorKind::InvalidInput, ".. or . are not valid filenames"))?;
+    path.file_name().ok_or_else(|| {
+        io::Error::new(ErrorKind::InvalidInput, ".. or . are not valid filenames")
+    })?;
     ensure_dirs_exist(dir)?;
     if !path.exists() {
         fs::write(path, DEFAULT_START_VALUE)?;
@@ -48,6 +49,7 @@ pub fn read(counter: &Path) -> Result<i64, Box<dyn Error>> {
 }
 
 pub fn write(counter: &Path, contents: i64) -> Result<(), io::Error> {
+    println!("{}", contents);
     fs::write(counter, contents.to_string())
 }
 
@@ -60,6 +62,7 @@ where
     file.read_to_string(&mut contents)?;
     let value: i64 = contents.trim().parse().map_err(|_| INT_PARSE_ERROR)?;
     let value = action(value);
+    println!("{}", value);
     file.set_len(0)?;
     file.rewind()?;
     file.write_all(value.to_string().as_bytes())?;
